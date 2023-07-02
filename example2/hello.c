@@ -3,45 +3,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char* get_string(napi_env env,napi_value v)
-{
-  char * buf;
-  size_t str_size;
-  size_t str_size_read;
-  napi_status status;
-
-  napi_get_value_string_utf8(env, v, NULL, 0, &str_size);
-  buf = (char*)calloc(str_size + 1, sizeof(char));
-  str_size = str_size + 1;
-  status= napi_get_value_string_utf8(env, v, buf, str_size, &str_size_read);
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Invalid string was passed as argument");
-  }
-  printf("get_string buf=%s\n", buf);
-  return buf;
-}
-
-static void check_status_arguments(napi_env env,napi_status status)
-{
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Failed to parse arguments");
-  }
-}
-
-
-
 static napi_value Method(napi_env env, napi_callback_info info) {
   napi_status status;
   napi_value result;
-  size_t argc = 1;
-  napi_value argv[1];
+ 
+  status = napi_create_string_utf8(env,"Confusión",NAPI_AUTO_LENGTH,&result);
+  assert(status == napi_ok);
 
-  status = napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
-  
-  check_status_arguments(env,status);
-  char* result_string =get_string(env,argv[0]);
+  size_t str_size=11;
+  size_t str_size_read;
 
-  status = napi_create_string_utf8(env,result_string,NAPI_AUTO_LENGTH,&result);
+
+  char* buf = (char*)calloc(11, sizeof(char));
+  status= napi_get_value_string_utf8(env, result, buf, str_size, &str_size_read);
+  assert(status == napi_ok);
+
+  printf("buf=%s\n",buf);
+
   return result;
 }
 
