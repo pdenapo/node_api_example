@@ -17,6 +17,7 @@ static napi_value Method(napi_env env, napi_callback_info info) {
   char* buf = (char*)calloc(11, sizeof(char));
   status= napi_get_value_string_utf8(env, result, buf, str_size, &str_size_read);
   assert(status == napi_ok);
+  printf("str_size=%zu\n",str_size_read);
 
   printf("buf=%s\n",buf);
 
