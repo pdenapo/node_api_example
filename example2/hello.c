@@ -13,14 +13,11 @@ static napi_value Method(napi_env env, napi_callback_info info) {
   size_t str_size=11;
   size_t str_size_read;
 
-
-  char* buf = (char*)calloc(11, sizeof(char));
+  char* buf = (char*)calloc(str_size, sizeof(char));
   status= napi_get_value_string_utf8(env, result, buf, str_size, &str_size_read);
   assert(status == napi_ok);
-  printf("str_size=%zu\n",str_size_read);
-
-  printf("buf=%s\n",buf);
-
+  printf("string returned by napi_get_value_string_utf8=%s \n",buf);
+  printf("str_size_read=%zu\n",str_size_read);
   return result;
 }
 
